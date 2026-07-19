@@ -72,7 +72,7 @@ Base every decision on target fit and screenshot evidence. Do not treat a refere
 
 ## `design-playbook.md` and approval
 
-Write a concise playbook with these headings: **Creative thesis**, **Why this works**, **Target personality**, **Keep**, **Change**, **Replace**, **Execution cues**, **Implementation prompt**, **Originality boundary**, and **Assumptions**. Explain the rationale in plain language; for example, why whitespace, hierarchy, typography, pacing, or restrained motion support the target. The implementation prompt must describe the target direction without reproducing source copy, assets, or layouts. End it with:
+Write a concise playbook with these headings: **Creative thesis**, **Why this works**, **Target personality**, **Keep**, **Change**, **Replace**, **Execution cues**, **Implementation prompt**, **Originality boundary**, and **Assumptions**. For an editorial target, add **Reading experience** with the approved treatment of article metadata, content blocks, discovery, newsletter conversion, and narrow-screen reading. Explain the rationale in plain language; for example, why whitespace, hierarchy, typography, pacing, or restrained motion support the target. The implementation prompt must describe the target direction without reproducing source copy, assets, or layouts. Keep the source-led `design-thesis.md` distinct from this target-led creative thesis. End it with:
 
 ```text
 Status: needs_approval

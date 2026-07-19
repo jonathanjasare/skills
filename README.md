@@ -17,7 +17,7 @@ Choose the skills you want and the coding agent you use. For the complete engine
 | `ship` | User-invoked orchestrator | Routes a request through the product, decision, implementation, verification, and review stages it needs. |
 | `thesis` | Reusable product stage | Tests whether a product or feature is worth building before significant engineering effort. |
 | `clarify` | Reusable decision stage | Resolves implementation decisions that repository evidence cannot answer. |
-| `inspire` | User-invoked design workflow | Turns one or more public design references into approved creative direction and an original implementation. |
+| `inspire` | User-invoked design workflow | Turns public design references into approved creative direction and an original implementation, including editorial and article experiences. |
 
 ## Ship workflow
 
@@ -51,7 +51,7 @@ Supply one or more public URLs and the target product:
 /inspire https://example.com https://another-example.com for a developer-focused analytics product.
 ```
 
-`inspire` captures evidence, creates an approval-ready design playbook, waits for direction, then builds and critiques an original result. It uses reference sites as research and does not clone their code, content, or brand assets.
+`inspire` captures evidence, creates an approval-ready design playbook, waits for direction, then builds and critiques an original result. For editorial targets it covers reading experience, publication discovery, and mobile articles. It uses reference sites as research and does not clone their code, content, or brand assets.
 
 ## License
 
