@@ -1,0 +1,4 @@
+interface:
+  display_name: "Contribute"
+  short_description: "Create one evidence-backed contribution"
+  default_prompt: "Use $contribute to identify and prepare one worthwhile repository contribution."

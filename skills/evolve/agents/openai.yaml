@@ -1,0 +1,7 @@
+interface:
+  display_name: "Evolve"
+  short_description: "Assess repository engineering maturity"
+  default_prompt: "Use $evolve to assess this repository and recommend its next evidence-backed engineering evolution."
+
+policy:
+  allow_implicit_invocation: false
