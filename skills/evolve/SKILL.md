@@ -1,6 +1,6 @@
 ---
 name: evolve
-description: Inspect a software repository, assess the engineering capabilities evidenced by its artifacts, assign an explainable maturity level, identify the primary capability constraint, and recommend the next evidence-backed evolution. Use when the user invokes evolve, /evolve, or $evolve; requests a quick or full Engineering Capability Assessment; or asks for an architecture- or verification-focused maturity assessment and roadmap.
+description: Inspect a software repository, assess the engineering capabilities evidenced by its artifacts, assign an explainable maturity level, identify the primary capability constraint, and recommend the next evidence-backed evolution. Use when the user invokes evolve, /evolve, or $evolve; requests a quick or deep Engineering Capability Assessment; or asks for an architecture- or verification-focused review and roadmap.
 ---
 
 # Evolve
@@ -9,14 +9,18 @@ Answer: **What is the next evidence-backed evolution of this repository's engine
 
 Assess the repository. Do not modify it unless the user separately asks to implement a recommendation.
 
-## Select depth and scope
+## Select an assessment
 
-- Use `quick` by default.
-- Use `full` when explicitly requested or when the requested decision requires broad evidence.
-- Treat `architecture` and `verification` as focus scopes, not separate methodologies. Combine them with either depth when requested, such as `evolve full architecture`.
-- Normalize invocation tokens regardless of order or case. If both depth tokens appear, use `full` and state the normalization. If both focus tokens appear, cover both and their material dependencies. Treat other modifiers as context only when their meaning is clear; otherwise ask one concise clarification instead of inventing a scope.
-- For a focus scope, inspect enough surrounding context to identify dependencies and avoid isolated recommendations.
-- Keep a quick assessment quick, but deepen sampling around deployment or release paths, runtime-consumed generated artifacts, sensitive integrations, or an important user path whose verification is missing or unclear. Escalate to `full` only when the decision remains unsupported across the repository.
+Expose four simple choices:
+
+- `/evolve` or `/evolve quick`: a fast repository health check using high-signal evidence.
+- `/evolve deep`: a complete assessment of all seven capabilities. Accept `full` as a backwards-compatible alias for `deep`.
+- `/evolve architecture`: a focused review of structure, boundaries, dependencies, and the constraints that affect safe change.
+- `/evolve verification`: a focused review of tests, CI, release confidence, recovery, and important user or operational outcomes.
+
+Treat `architecture` and `verification` as focused deep reviews; do not ask users to combine them with `deep` or `full`. If a user supplies multiple focus tokens, cover both and their material dependencies. Normalize case and token order. Treat other modifiers as context only when their meaning is clear; otherwise ask one concise clarification instead of inventing a scope.
+
+For a focused review, inspect enough surrounding context to identify dependencies and avoid isolated recommendations. Keep a quick assessment quick, but deepen sampling around deployment or release paths, runtime-consumed generated artifacts, sensitive integrations, or an important user path whose verification is missing or unclear. Escalate to a deep assessment only when the decision remains unsupported across the repository.
 
 Before inspection, record whether Git metadata is accessible, absent, or unknown, and whether the topology is single-project, monorepo, or multi-project. State the root or roots in scope and explicitly include or exclude nested repositories and worktrees. Git metadata is optional evidence; its absence is not a capability gap.
 
@@ -105,7 +109,7 @@ Focus the roadmap on reaching the next maturity level, or sustaining validated l
 ## Write the report
 
 - For `quick`, use [templates/quick-assessment.md](templates/quick-assessment.md).
-- For `full`, use [templates/full-assessment.md](templates/full-assessment.md).
+- For `deep` (or the `full` alias), use [templates/full-assessment.md](templates/full-assessment.md).
 - For a focus scope, keep the selected template but limit detailed findings to that capability and its material dependencies.
 
 State important unknowns and assessment boundaries. Use qualitative confidence (`low`, `medium`, or `high`) and describe evidence coverage; do not use unexplained percentages or false precision.

@@ -11,14 +11,12 @@ Use the invocation syntax supported by your coding agent:
 ```text
 /evolve
 /evolve quick
-/evolve full
+/evolve deep
 /evolve architecture
 /evolve verification
-/evolve full architecture
-/evolve quick architecture verification
 ```
 
-The default is a quick assessment. `architecture` and `verification` narrow the scope while preserving the same evidence and recommendation methodology, and they may be combined. Token order and case do not matter; conflicting depth tokens resolve to `full`, while unclear modifiers prompt a concise clarification.
+The default is a quick health check. Use `deep` for a complete assessment, `architecture` for a structural review, or `verification` for a testing and delivery review. Focus reviews include the surrounding dependencies they need, so users do not need to combine commands. `full` remains accepted as an alias for `deep`; token case does not matter, while unclear modifiers prompt a concise clarification.
 
 The skill reads repository artifacts and produces an Engineering Evolution Report. It does not change the repository unless the user separately requests implementation.
 

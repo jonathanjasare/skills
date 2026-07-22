@@ -61,16 +61,15 @@ Run a quick assessment with no extra setup:
 /evolve
 ```
 
-Use `full` for deeper coverage, or focus the assessment on architecture or verification:
+Choose the level of review you need:
 
 ```text
-/evolve full
+/evolve deep
 /evolve architecture
 /evolve verification
-/evolve full architecture
 ```
 
-`evolve` inspects repository evidence, assesses seven engineering capabilities, identifies the primary capability constraint, and recommends the smallest meaningful next evolution with a validation method. It reports what is observed, inferred, declared, or unknown and does not modify the repository unless you separately ask for changes.
+`evolve` inspects repository evidence, assesses seven engineering capabilities, identifies the primary capability constraint, and recommends the smallest meaningful next evolution with a validation method. Use the default command for a quick health check, `deep` for complete coverage, or a focus command for architecture or verification. It reports what is observed, inferred, declared, or unknown and does not modify the repository unless you separately ask for changes.
 
 ## License
 
