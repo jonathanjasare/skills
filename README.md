@@ -1,122 +1,82 @@
 # Jonathan's Agent Skills
 
-Five focused workflows that make AI coding agents more deliberate: decide whether an idea is worth building, resolve decisions that block implementation, ship verified code, turn design references into an original website, or identify the next engineering improvement a repository needs.
+Reusable workflows that help AI coding agents plan and complete product, design, and engineering work.
 
-They use the portable Agent Skills format and work with compatible coding agents including Claude Code, Codex, Cursor, and Antigravity.
-
-## Choose a skill
-
-| What you want to do | Skill | What it does |
-| --- | --- | --- |
-| Take a feature or fix from request to completed code | [`ship`](skills/ship/SKILL.md) | Inspects the repository, resolves only the uncertainty that matters, implements the smallest coherent change, runs relevant checks, critically reviews the result, and fixes blocking findings. |
-| Decide whether a product or feature is worth building | [`thesis`](skills/thesis/SKILL.md) | Tests the customer problem, value, alternatives, differentiation, and smallest useful experience before significant engineering work begins. |
-| Resolve a decision that the repository cannot answer | [`clarify`](skills/clarify/SKILL.md) | Inspects existing evidence first, then asks one material question at a time until implementation can continue without guessing. |
-| Build an original website using other sites as design references | [`inspire`](skills/inspire/SKILL.md) | Captures one or more public sites, explains their design language, adapts the strongest principles to your product, gets approval, builds an original result, and critiques it. |
-| Find the most valuable next improvement for a codebase | [`evolve`](skills/evolve/SKILL.md) | Performs a read-only, evidence-based engineering assessment, identifies the repository's primary capability constraint, and recommends a proportionate next step with a validation method. |
+They use the Agent Skills format and work with compatible agents including Claude Code, Codex, Cursor, and Antigravity.
 
 ## Install
-
-Run the interactive installer:
 
 ```bash
 npx skills@latest add jonathanjasare/skills
 ```
 
-The installer asks which skills you want and which compatible coding agent should receive them.
+The installer asks which skills you want and which AI agent to install them for. Ship needs `thesis` and `clarify`, so install all three together. Every other skill works on its own.
 
-Choose based on how you plan to work:
+Examples below use `/skill-name` for Claude Code. In Codex, use `$skill-name`.
 
-| Workflow | Install these skills |
-| --- | --- |
-| Complete engineering workflow | `ship`, `thesis`, and `clarify` |
-| Reference-led website design | `inspire` |
-| Repository assessment | `evolve` |
+## Choose a skill
 
-`ship` requires `thesis` and `clarify` because it invokes them when a request contains product or implementation uncertainty. `inspire` and `evolve` are standalone skills.
+| Your goal | Skill | What it does |
+| --- | --- | --- |
+| Take an idea or coding request from start to finish | [`ship`](skills/ship/SKILL.md) | Chooses whether to test the idea, ask a question, or start coding. It then builds, tests, and reviews the result. |
+| Decide whether a product or feature is worth building | [`thesis`](skills/thesis/SKILL.md) | Checks whether users have a real problem and whether the idea is worth pursuing, then recommends what to do next. |
+| Answer a question that must be settled before coding | [`clarify`](skills/clarify/SKILL.md) | Reads the code first, then asks only questions that must be answered before work can continue. |
+| Create an original website from design references | [`inspire`](skills/inspire/SKILL.md) | Studies public websites, adapts their best design ideas to your product, builds an original website, and reviews it. |
+| Find the most valuable next improvement for a codebase | [`evolve`](skills/evolve/SKILL.md) | Finds the main engineering weakness holding the repository back and recommends the smallest worthwhile improvement. |
 
-The examples below use `/skill-name`, as supported by Claude Code. In Codex, use `$skill-name`. Other compatible agents may also invoke a skill from natural-language requests.
+## How Ship works
 
-## Ship a change
-
-Use `ship` when you want the agent to complete a feature, fix, or other repository change—not merely suggest a plan.
+Use `ship` as the single entry point for a product idea or engineering request:
 
 ```text
 /ship Add a dark mode toggle to settings and remember the user's choice.
 ```
 
-What happens:
+`ship` reads the request and the existing code, then decides what to do:
 
-1. `ship` inspects the request and repository before asking questions.
-2. If the customer need or value is uncertain, it runs `thesis`. If the evidence says not to build, it stops before changing code.
-3. If a decision about behaviour, scope, data, interfaces, or architecture still cannot be answered from the repository, it runs `clarify`.
-4. Once the request is ready, it implements the smallest coherent change using the repository's existing patterns.
-5. It runs the relevant tests, type checks, lint, builds, migrations, or acceptance checks available for that change.
-6. It reviews the final diff for correctness, regressions, unnecessary complexity, and drift from the requested outcome. Blocking findings are fixed and checked again.
+- It is not clear that the product solves a real user need: run `thesis`. Stop before coding if the evidence is weak.
+- An important decision about what to build or how it should work is missing: run `clarify`.
+- The request is clear and worthwhile: start coding.
 
-The result reports what changed, how it was verified, what the review found, and any remaining risk. `thesis` and `clarify` are skipped when the request is already clear.
+If Ship decides to continue, it makes the change, runs the relevant tests and checks, reviews the result for bugs or needless complexity, and fixes important problems before reporting back.
 
-## Test a product thesis
-
-Use `thesis` before committing engineering effort when the customer, problem, value, positioning, or need to exist is uncertain.
+You can also use `thesis` or `clarify` on their own:
 
 ```text
-/thesis Should we add AI-generated meeting summaries to our project management product?
+/thesis Should we add AI-generated meeting summaries to our product?
+/clarify Should this export use CSV or JSON given the existing API?
 ```
 
-It researches current facts and alternatives, tests the proposed customer and job, challenges the differentiation, and narrows the idea to the smallest defensible experience. It returns one decision: `Proceed`, `Proceed but Narrow`, `Pivot`, `Research Further`, or `Stop`.
+## Inspire
 
-`thesis` does not implement the feature. You can invoke it directly, or let `ship` invoke it when needed.
-
-## Clarify a blocking decision
-
-Use `clarify` when implementation is blocked by a choice that cannot be resolved from existing code, tests, documentation, or prior decisions.
-
-```text
-/clarify Should the new bulk export use CSV or JSON given the existing API and user workflow?
-```
-
-It inspects the repository first, recommends an answer when evidence supports one, and asks only questions whose answers could materially change the implementation. It asks one question at a time and stops as soon as the agent can proceed without guessing.
-
-You can invoke `clarify` directly, or let `ship` invoke it when needed.
-
-## Create from design references
-
-Use `inspire` when you have one or more public websites whose design principles you want to understand and adapt to your own product.
+Supply one or more public URLs and describe the target product:
 
 ```text
 /inspire https://example.com https://another-example.com for a developer analytics product.
 ```
 
-The default flow is:
+The usual flow takes screenshots and measurements, explains why the designs work, adapts those ideas to your product, and gives you a plan to approve. Once approved, Inspire builds an original website and reviews it. It does not copy source code, content, logos, images, or recognisable brand elements.
 
-1. Capture screenshots, scrolling behaviour, typography, colour, layout, and motion evidence from every supplied URL.
-2. Explain why the references feel the way they do and select the strongest source for each relevant design dimension.
-3. Translate those principles into creative direction that fits your product, audience, content, and brand.
-4. Present a concise design playbook for approval before changing product code.
-5. After approval, build an original implementation and critique it against the approved direction.
-
-Use a stage directly only when you want to stop at that boundary:
+Use one part of the flow on its own when you do not want the full process:
 
 | Command | Result |
 | --- | --- |
-| `/inspire capture <url>` | Creates the raw reference evidence without interpreting or building from it. |
-| `/inspire direct` | Turns an existing `references/` pack into creative direction and an approval-ready design playbook. |
-| `/inspire build` | Builds from an approved design playbook, validates the result, and performs a design critique. |
+| `/inspire capture <url>` | Save screenshots, scrolling behaviour, colours, fonts, and layout details. |
+| `/inspire direct` | Use an existing `references/` folder to create a design plan for your approval. |
+| `/inspire build` | Build the approved design, run available checks, and review the result. |
 
-`inspire` uses reference sites as research. It does not copy their source code, content, logos, imagery, or distinctive brand assets.
+## Evolve
 
-## Assess a repository
+Use `evolve` to inspect a repository and decide what to improve next:
 
-Use `evolve` when you want to understand a repository's engineering maturity and choose the next improvement based on evidence rather than a generic best-practice checklist.
-
-| Command | Use it for |
+| Command | Result |
 | --- | --- |
-| `/evolve` | A quick health check using high-signal repository evidence. |
-| `/evolve deep` | A complete assessment of architecture, knowledge, change safety, verification, delivery, governance, and maintainability. |
-| `/evolve architecture` | A focused review of structure, boundaries, dependencies, and the constraints affecting safe change. |
-| `/evolve verification` | A focused review of tests, CI, release confidence, recovery, and important user or operational outcomes. |
+| `/evolve` | Quick repository health check. |
+| `/evolve deep` | Full review of code structure, documentation, testing, releases, ownership, and long-term maintenance. |
+| `/evolve architecture` | Review how the code is organised and how its parts connect. |
+| `/evolve verification` | Review how tests, automated checks, releases, and recovery protect users. |
 
-Every mode identifies the primary capability constraint and recommends the smallest meaningful evolution with evidence, confidence, success criteria, and a validation method. The assessment is read-only unless you separately ask the agent to implement its recommendation.
+Every mode finds the biggest weakness, suggests the smallest useful improvement, and explains how to check that it worked. Evolve does not change code unless you ask it to.
 
 ## License
 
