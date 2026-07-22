@@ -1,0 +1,7 @@
+interface:
+  display_name: "Ship"
+  short_description: "Route work through the minimum reliable workflow"
+  default_prompt: "Use $ship to route and complete this request."
+
+policy:
+  allow_implicit_invocation: false

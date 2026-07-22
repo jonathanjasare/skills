@@ -1,0 +1,72 @@
+name: Validate skills
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate SKILL.md files
+        run: |
+          python - <<'PY'
+          import re
+          import sys
+          from pathlib import Path
+
+          allowed_keys = {"name", "description", "license", "allowed-tools", "metadata"}
+          skill_files = sorted(Path("skills").glob("*/SKILL.md"))
+          errors = []
+
+          if not skill_files:
+              errors.append("No skills/*/SKILL.md files found")
+
+          for path in skill_files:
+              text = path.read_text(encoding="utf-8")
+              match = re.match(r"^---\n(.*?)\n---(?:\n|$)", text, re.DOTALL)
+              if not match:
+                  errors.append(f"{path}: missing or malformed YAML frontmatter")
+                  continue
+
+              frontmatter = match.group(1)
+              keys = set(re.findall(r"^([A-Za-z0-9_-]+):", frontmatter, re.MULTILINE))
+              unexpected = keys - allowed_keys
+              if unexpected:
+                  errors.append(f"{path}: unexpected frontmatter key(s): {', '.join(sorted(unexpected))}")
+
+              name_match = re.search(r"^name:\s*(.+?)\s*$", frontmatter, re.MULTILINE)
+              description_match = re.search(r"^description:\s*(.+?)\s*$", frontmatter, re.MULTILINE)
+              if not name_match:
+                  errors.append(f"{path}: missing name")
+                  continue
+              if not description_match:
+                  errors.append(f"{path}: missing description")
+
+              name = name_match.group(1).strip().strip('"\'')
+              if not re.fullmatch(r"[a-z0-9-]{1,64}", name) or name.startswith("-") or name.endswith("-") or "--" in name:
+                  errors.append(f"{path}: invalid skill name {name!r}")
+              if name != path.parent.name:
+                  errors.append(f"{path}: name {name!r} does not match directory {path.parent.name!r}")
+
+              if description_match:
+                  description = description_match.group(1).strip().strip('"\'')
+                  if not description:
+                      errors.append(f"{path}: description is empty")
+                  if len(description) > 1024:
+                      errors.append(f"{path}: description is longer than 1024 characters")
+                  if "<" in description or ">" in description:
+                      errors.append(f"{path}: description cannot contain angle brackets")
+
+          if errors:
+              print("\n".join(errors), file=sys.stderr)
+              sys.exit(1)
+
+          print(f"Validated {len(skill_files)} skill(s).")
+          PY
