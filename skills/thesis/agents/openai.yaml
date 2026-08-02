@@ -1,0 +1,7 @@
+interface:
+  display_name: "Thesis"
+  short_description: "Validate product value before implementation"
+  default_prompt: "Use $thesis to test whether this product or feature is worth building."
+
+policy:
+  allow_implicit_invocation: true

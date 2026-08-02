@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inspire"
+  short_description: "Turn reference sites into creative direction"
+  default_prompt: "Use $inspire on these URLs to create an approval-ready creative direction for my product."

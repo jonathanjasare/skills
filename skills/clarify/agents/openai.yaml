@@ -1,0 +1,7 @@
+interface:
+  display_name: "Clarify"
+  short_description: "Resolve decisions before coding"
+  default_prompt: "Use $clarify to identify and resolve the decision blocking implementation."
+
+policy:
+  allow_implicit_invocation: true
