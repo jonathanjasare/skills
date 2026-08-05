@@ -2,7 +2,7 @@
 
 Reusable skills that help AI coding agents plan and complete product, design, and engineering work.
 
-They use the Agent Skills format. The installer supports Claude Code, Codex, Cursor, and Antigravity. `orchestrate` is Codex-specific because it routes GPT-5.6 Sol and Luna.
+They use the Agent Skills format. The installer supports Claude Code, Codex, Cursor, and Antigravity. `orchestrate` is Codex-specific because it uses Codex subagents.
 
 ## Install
 
@@ -21,7 +21,7 @@ Examples below use `/skill-name` for Claude Code. In Codex, use `$skill-name`.
 | Take an idea or coding request from start to finish | [`ship`](skills/ship/SKILL.md) | Checks whether the idea and its differentiation are supported, asks only blocking questions, then builds, tests, and reviews the result. |
 | Decide whether a product or feature is worth building | [`thesis`](skills/thesis/SKILL.md) | Checks whether users have a real problem and whether the idea is worth pursuing, then recommends what to do next. |
 | Answer a question that must be settled before coding | [`clarify`](skills/clarify/SKILL.md) | Reads the code first, then asks only questions that must be answered before work can continue. |
-| Delegate bounded Codex work while keeping Sol in control | [`orchestrate`](skills/orchestrate/SKILL.md) (Codex only) | Keeps Sol responsible for decisions and completion while Luna handles small, independent work packages. |
+| Delegate bounded Codex work while keeping the primary agent in control | [`orchestrate`](skills/orchestrate/SKILL.md) (Codex only) | Prefers Luna for small, independent work packages, uses Terra when Luna is unavailable, and keeps final decisions with the primary agent. |
 | Create an original website from design references | [`inspire`](skills/inspire/SKILL.md) | Studies public websites, adapts selected design principles to your product, builds an original website, and reviews it. |
 | Find the most valuable next improvement for a codebase | [`evolve`](skills/evolve/SKILL.md) | Finds the main engineering weakness holding the repository back and recommends the smallest worthwhile improvement. |
 
@@ -52,13 +52,13 @@ You can also use `thesis` or `clarify` on their own:
 
 ## Orchestrate (Codex only)
 
-Use `orchestrate` explicitly in a GPT-5.6 Sol Codex task when substantial work divides cleanly:
+Use `orchestrate` explicitly in Codex when substantial work divides cleanly:
 
 ```text
 $orchestrate Add CSV import and independently update its focused tests.
 ```
 
-Sol keeps control of scope, decisions, integration, verification, and completion. Luna is used only when both models can be verified and the work splits into independent packages. It delegates only when the expected benefit exceeds the coordination and verification cost. Otherwise the task runs directly without substituting another worker or claiming delegation occurred.
+The primary agent keeps control of scope, decisions, integration, verification, and completion. Orchestrate prefers Luna when Codex exposes it as a worker and falls back to Terra when necessary. It delegates only when the expected benefit exceeds the coordination and verification cost. Otherwise the task runs directly without claiming delegation occurred.
 
 ## Inspire
 
