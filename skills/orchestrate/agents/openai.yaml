@@ -1,7 +1,7 @@
 interface:
   display_name: "Orchestrate"
-  short_description: "Codex-only Sol-to-Luna delegation"
-  default_prompt: "Use $orchestrate in Codex to complete this work with Sol directing and Luna handling only bounded execution."
+  short_description: "Selective Codex worker delegation"
+  default_prompt: "Use $orchestrate in Codex to complete this work with the primary agent directing and the best supported worker handling only bounded execution."
 
 policy:
   allow_implicit_invocation: false
